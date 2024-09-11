@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  fintech_app:
+    container_name: fintech_app
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  fintech_db:
+    container_name: fintech_db
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=fintech_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - TZ="America/Sao_Paulo"
+    volumes:
+      - ./db/:/data/db
