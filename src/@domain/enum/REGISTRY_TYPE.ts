@@ -1,0 +1,3 @@
+export enum REGISTRY_TYPE {
+  CREATE_USER = 'CREATE_USER',
+}

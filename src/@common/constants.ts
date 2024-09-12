@@ -3,7 +3,3 @@ export enum ENV_VARS {
   DEV = 'development',
   PROD = 'prod',
 }
-
-export enum REGISTRY_TYPE {
-  CREATE_USER = 'CREATE_USER',
-}

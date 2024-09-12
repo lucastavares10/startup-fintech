@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { REGISTRY_TYPE } from '../constants';
+import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
 
 @Injectable()
 export class LoggingService {
