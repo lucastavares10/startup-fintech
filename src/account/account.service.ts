@@ -8,7 +8,7 @@ export class AccountService {
 
   async addAccountBalance(accountId: number, addBalanceDto: AddBalanceDto) {
     try {
-      return await this.accountRepository.addBalance(
+      return await this.accountRepository.increaseBalance(
         accountId,
         addBalanceDto.value,
       );

@@ -3,13 +3,14 @@ import { PrismaService } from '../prisma.service';
 import { User } from 'src/@domain/entities/user.entity';
 import { USER_TYPE } from 'src/@domain/enum/USER_TYPE';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { OutputUserDto } from 'src/@domain/dtos/user/output-user.dto';
+import { Account } from 'src/@domain/entities/account.entity';
+import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
 
 @Injectable()
 export class UserRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll(): Promise<OutputUserDto[]> {
+  async findAll(): Promise<User[]> {
     const users = await this.prismaService.user.findMany({
       select: {
         id: true,
@@ -22,18 +23,19 @@ export class UserRepository {
     });
 
     return users.map((user) => {
-      return {
-        id: user.id,
-        fullname: user.fullname,
-        email: user.email,
-        cpfCnpj: user.cpfCnpj,
-        account: { id: user.Account.id, balance: user.Account.balance },
-        type: USER_TYPE[user.type],
-      };
+      return new User(
+        user.id,
+        user.fullname,
+        user.email,
+        user.cpfCnpj,
+        USER_TYPE[user.type],
+        null,
+        new Account(user.Account.id, user.Account.balance),
+      );
     });
   }
 
-  async create(user: User): Promise<OutputUserDto> {
+  async create(user: CreateUserDto): Promise<User> {
     try {
       return await this.prismaService.$transaction(async (prisma) => {
         const newUser = await prisma.user.create({
@@ -57,11 +59,15 @@ export class UserRepository {
           },
         });
 
-        return {
-          ...newUser,
-          account: { id: newAccount.id, balance: newAccount.balance },
-          type: USER_TYPE[newUser.type],
-        };
+        return new User(
+          newUser.id,
+          newUser.fullname,
+          newUser.email,
+          newUser.cpfCnpj,
+          USER_TYPE[newUser.type],
+          null,
+          new Account(newAccount.id, newAccount.balance),
+        );
       });
     } catch (error) {
       if (
@@ -74,7 +80,7 @@ export class UserRepository {
     }
   }
 
-  async findOne(userId: number): Promise<OutputUserDto | null> {
+  async findOne(userId: number): Promise<User | null> {
     const user = await this.prismaService.user.findUnique({
       where: { id: userId },
       select: {
@@ -89,17 +95,44 @@ export class UserRepository {
 
     if (!user) return null;
 
-    return {
-      id: user.id,
-      fullname: user.fullname,
-      email: user.email,
-      cpfCnpj: user.cpfCnpj,
-      account: { id: user.Account.id, balance: user.Account.balance },
-      type: USER_TYPE[user.type],
-    };
+    return new User(
+      user.id,
+      user.fullname,
+      user.email,
+      user.cpfCnpj,
+      USER_TYPE[user.type],
+      null,
+      new Account(user.Account.id, user.Account.balance),
+    );
   }
 
-  async update(userId: number, user: Partial<User>): Promise<OutputUserDto> {
+  async findByAccountId(accountId: number): Promise<User | null> {
+    const user = await this.prismaService.user.findFirst({
+      where: { Account: { id: accountId } },
+      select: {
+        id: true,
+        fullname: true,
+        email: true,
+        cpfCnpj: true,
+        type: true,
+        Account: { select: { id: true, balance: true } },
+      },
+    });
+
+    if (!user) return null;
+
+    return new User(
+      user.id,
+      user.fullname,
+      user.email,
+      user.cpfCnpj,
+      USER_TYPE[user.type],
+      null,
+      new Account(user.Account.id, user.Account.balance),
+    );
+  }
+
+  async update(userId: number, user: Partial<User>): Promise<User> {
     try {
       const updatedUser = await this.prismaService.user.update({
         where: { id: userId },
@@ -114,17 +147,15 @@ export class UserRepository {
         },
       });
 
-      return {
-        id: updatedUser.id,
-        fullname: updatedUser.fullname,
-        email: updatedUser.email,
-        cpfCnpj: updatedUser.cpfCnpj,
-        account: {
-          id: updatedUser.Account.id,
-          balance: updatedUser.Account.balance,
-        },
-        type: USER_TYPE[updatedUser.type],
-      };
+      return new User(
+        updatedUser.id,
+        updatedUser.fullname,
+        updatedUser.email,
+        updatedUser.cpfCnpj,
+        USER_TYPE[updatedUser.type],
+        null,
+        new Account(updatedUser.Account.id, updatedUser.Account.balance),
+      );
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&

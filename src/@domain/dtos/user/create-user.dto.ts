@@ -2,16 +2,12 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsOptional,
   Length,
   MinLength,
 } from 'class-validator';
 import { USER_TYPE } from 'src/@domain/enum/USER_TYPE';
 
 export class CreateUserDto {
-  @IsOptional()
-  id?: number;
-
   @IsNotEmpty({ message: 'Fullname is required' })
   fullname: string;
 
@@ -21,17 +17,13 @@ export class CreateUserDto {
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
 
-  @Length(11, 16, {
-    message: 'CPF/CNPJ must be between 11 and 16 characters long',
+  @Length(11, 14, {
+    message: 'CPF/CNPJ must be 11 or 14 characters long',
   })
   cpfCnpj: string;
 
-  @IsEnum(USER_TYPE, { message: 'Invalid user type' })
+  @IsEnum(USER_TYPE, {
+    message: `Invalid user type. (${Object.values(USER_TYPE).map((type) => type)})`,
+  })
   type: USER_TYPE;
-
-  @IsOptional()
-  createdAt?: Date;
-
-  @IsOptional()
-  updatedAt?: Date;
 }

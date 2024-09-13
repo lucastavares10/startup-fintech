@@ -5,19 +5,36 @@ import { PrismaService } from '../prisma.service';
 export class AccountRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async addBalance(
+  async increaseBalance(
     accountId: number,
     value: number,
   ): Promise<{ newBalance: number }> {
-    const account = await this.prismaService.account.findUnique({
+    const updatedAccount = await this.prismaService.account.update({
       where: { id: accountId },
+      data: {
+        balance: {
+          increment: value,
+        },
+      },
+      select: {
+        balance: true,
+      },
     });
 
-    if (!account) throw new Error('Account not found');
+    return { newBalance: updatedAccount.balance };
+  }
 
+  async decreaseBalance(
+    accountId: number,
+    value: number,
+  ): Promise<{ newBalance: number }> {
     const updatedAccount = await this.prismaService.account.update({
-      where: { id: account.id },
-      data: { balance: account.balance + value },
+      where: { id: accountId },
+      data: {
+        balance: {
+          decrement: value,
+        },
+      },
       select: {
         balance: true,
       },

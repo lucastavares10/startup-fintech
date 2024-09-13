@@ -16,16 +16,8 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { fullname, email, password, cpfCnpj, type } = createUserDto;
-
     try {
-      const newUser = await this.userRepository.create({
-        fullname,
-        email,
-        cpfCnpj,
-        type,
-        password,
-      });
+      const newUser = await this.userRepository.create(createUserDto);
 
       return newUser;
     } catch (error) {
