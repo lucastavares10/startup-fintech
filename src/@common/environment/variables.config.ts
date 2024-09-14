@@ -4,5 +4,6 @@ export const variables = (): any => {
   return {
     NODE_ENV: env.NODE_ENV,
     PORT: env.PORT,
+    BCRYPT_PASSWORD: env.BCRYPT_PASSWORD,
   };
 };

@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { HashingService } from 'src/@common/hashing/hashing.service';
 import { LoggingService } from 'src/@common/logger/logger.service';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
 import { UpdateUserDto } from 'src/@domain/dtos/user/update-user.dto';
@@ -13,17 +14,28 @@ export class UserService {
   constructor(
     private readonly loggingService: LoggingService,
     private readonly userRepository: UserRepository,
+    private readonly hashingService: HashingService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const newUser = await this.userRepository.create(createUserDto);
+      const passwordHash = await this.hashingService.hash(
+        createUserDto.password,
+      );
+
+      const newUser = await this.userRepository.create({
+        ...createUserDto,
+        password: passwordHash,
+      });
 
       return newUser;
     } catch (error) {
-      if (error.message === 'Email or CpfCnpj already exists') {
-        throw new ConflictException('Email or CpfCnpj already exists');
-      }
+      if (error.message === 'Email already exists')
+        throw new ConflictException('Email already exists');
+
+      if (error.message === 'CpfCnpj already exists')
+        throw new ConflictException('CpfCnpj already exists');
+
       throw error;
     }
   }

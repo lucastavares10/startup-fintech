@@ -12,6 +12,12 @@ export class CommonTransfer implements ITransfer {
   ) {}
 
   async handle(payer: User, payeeId: number, value: number): Promise<void> {
+    if (!payer.isCommon()) {
+      throw new BadRequestException(
+        'Only common users can initiate transfers at the moment',
+      );
+    }
+
     if (!payer.hasBalance(value)) {
       throw new BadRequestException('Insufficient funds');
     }

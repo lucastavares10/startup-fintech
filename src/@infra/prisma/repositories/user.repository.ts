@@ -74,7 +74,11 @@ export class UserRepository {
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
-        throw new Error('Email or CpfCnpj already exists');
+        if (error.meta?.target[0] === 'email')
+          throw new Error('Email already exists');
+
+        if (error.meta?.target[0] === 'cpfCnpj')
+          throw new Error('CpfCnpj already exists');
       }
       throw error;
     }

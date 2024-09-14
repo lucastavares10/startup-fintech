@@ -10,7 +10,6 @@ import { EnvironmentService } from './environment.service';
       load: [variables],
     }),
   ],
-  controllers: [],
   providers: [EnvironmentService],
   exports: [EnvironmentService],
 })
