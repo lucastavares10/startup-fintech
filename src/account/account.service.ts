@@ -1,14 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { AddBalanceDto } from 'src/@domain/dtos/account/add-balance.dto';
-import { AccountRepository } from 'src/@infra/prisma/repositories/account.repository';
+import { IIncreaseBalanceRepository } from 'src/@domain/interfaces/repositories/account/IIncreaseBalanceRepository';
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly accountRepository: AccountRepository) {}
+  constructor(
+    @Inject('IIncreaseBalanceRepository')
+    private readonly increaseBalanceRepository: IIncreaseBalanceRepository,
+  ) {}
 
   async addAccountBalance(accountId: number, addBalanceDto: AddBalanceDto) {
     try {
-      return await this.accountRepository.increaseBalance(
+      return await this.increaseBalanceRepository.increaseBalance(
         accountId,
         addBalanceDto.value,
       );

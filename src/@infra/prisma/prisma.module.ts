@@ -12,7 +12,56 @@ import { TransactionRepository } from './repositories/transactions.repository';
     UserRepository,
     AccountRepository,
     TransactionRepository,
+    {
+      provide: 'ICreateUserRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IFindAllUsersRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IFindUserByIdRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IFindUserByAccountIdRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IUpdateUserRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IDeleteUserRepository',
+      useClass: UserRepository,
+    },
+    {
+      provide: 'IDecreaseBalanceRepository',
+      useClass: AccountRepository,
+    },
+    {
+      provide: 'IIncreaseBalanceRepository',
+      useClass: AccountRepository,
+    },
+    {
+      provide: 'ICreateTransactionRepository',
+      useClass: TransactionRepository,
+    },
   ],
-  exports: [UserRepository, AccountRepository, TransactionRepository],
+  exports: [
+    UserRepository,
+    AccountRepository,
+    TransactionRepository,
+    'ICreateUserRepository',
+    'IFindAllUsersRepository',
+    'IFindUserByIdRepository',
+    'IFindUserByAccountIdRepository',
+    'IUpdateUserRepository',
+    'IDeleteUserRepository',
+    'IDecreaseBalanceRepository',
+    'IIncreaseBalanceRepository',
+    'ICreateTransactionRepository',
+  ],
 })
 export class PrismaModule {}

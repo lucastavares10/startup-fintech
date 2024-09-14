@@ -16,9 +16,7 @@
 
 ## 1. Descrição do projeto
 
-Este projeto foi desenvolvido como parte de um desafio técnico para uma Fintech Startup. O objetivo é fornecer uma API RESTful construída com NestJS, utilizando boas práticas de desenvolvimento e design.
-
-#### https://github.com/felipeas314/Backend-teste
+Este projeto foi desenvolvido como parte de um desafio para uma Fintech Startup. O objetivo é fornecer uma API RESTful construída com NestJS, utilizando boas práticas de desenvolvimento e design.
 
 ## 2. Diagrama de entidade e relacionamento
 

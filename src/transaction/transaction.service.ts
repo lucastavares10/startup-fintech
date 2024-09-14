@@ -25,11 +25,13 @@ export class TransactionService {
 
     this.setTransferType(payer.type);
 
-    return await this.transfer.handle(
+    const transaction = await this.transfer.handle(
       payer,
       transferDto.payee,
       transferDto.value,
     );
+
+    return { message: `Transfer completed successfully.`, data: transaction };
   }
 
   setTransferType(userType: USER_TYPE) {

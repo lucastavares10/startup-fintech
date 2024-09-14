@@ -8,7 +8,7 @@ export class TransactionController {
 
   @Post()
   @HttpCode(200)
-  transfer(@Body() transferDto: TransferDto) {
-    return this.transactionService.handle(transferDto);
+  async transfer(@Body() transferDto: TransferDto) {
+    return await this.transactionService.handle(transferDto);
   }
 }

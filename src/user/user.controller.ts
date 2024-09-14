@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
@@ -26,14 +27,25 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':userId')
+  findOne(@Param('userId') userId: string) {
+    if (isNaN(+userId)) {
+      throw new BadRequestException('Invalid UserID');
+    }
+
+    return this.userService.findOne(+userId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch(':userId')
+  update(
+    @Param('userId') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    if (isNaN(+userId)) {
+      throw new BadRequestException('Invalid UserID');
+    }
+
+    return this.userService.update(+userId, updateUserDto);
   }
 
   @HttpCode(204)

@@ -5,9 +5,23 @@ import { USER_TYPE } from 'src/@domain/enum/USER_TYPE';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Account } from 'src/@domain/entities/account.entity';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
+import { IFindAllUsersRepository } from 'src/@domain/interfaces/repositories/user/IFindAllUsersRepository';
+import { ICreateUserRepository } from 'src/@domain/interfaces/repositories/user/ICreateUserRepository';
+import { IFindUserByIdRepository } from 'src/@domain/interfaces/repositories/user/IFindUserByIdRepository';
+import { IFindUserByAccountIdRepository } from 'src/@domain/interfaces/repositories/user/IFindUserByAccountIdRepository';
+import { IUpdateUserRepository } from 'src/@domain/interfaces/repositories/user/IUpdateUserRepository';
+import { IDeleteUserRepository } from 'src/@domain/interfaces/repositories/user/IDeleteUserRepository';
 
 @Injectable()
-export class UserRepository {
+export class UserRepository
+  implements
+    IFindAllUsersRepository,
+    ICreateUserRepository,
+    IFindUserByIdRepository,
+    IFindUserByAccountIdRepository,
+    IUpdateUserRepository,
+    IDeleteUserRepository
+{
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll(): Promise<User[]> {
@@ -136,7 +150,7 @@ export class UserRepository {
     );
   }
 
-  async update(userId: number, user: Partial<User>): Promise<User> {
+  async update(userId: number, user: Partial<CreateUserDto>): Promise<User> {
     try {
       const updatedUser = await this.prismaService.user.update({
         where: { id: userId },
@@ -148,6 +162,8 @@ export class UserRepository {
           cpfCnpj: true,
           type: true,
           Account: { select: { id: true, balance: true } },
+          createdAt: true,
+          updatedAt: true,
         },
       });
 
@@ -159,6 +175,8 @@ export class UserRepository {
         USER_TYPE[updatedUser.type],
         null,
         new Account(updatedUser.Account.id, updatedUser.Account.balance),
+        updatedUser.createdAt,
+        updatedUser.updatedAt,
       );
     } catch (error) {
       if (

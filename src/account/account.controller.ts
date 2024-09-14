@@ -1,4 +1,10 @@
-import { Controller, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Patch,
+  Param,
+  BadRequestException,
+} from '@nestjs/common';
 import { AccountService } from './account.service';
 import { AddBalanceDto } from 'src/@domain/dtos/account/add-balance.dto';
 
@@ -11,6 +17,10 @@ export class AccountController {
     @Param('accountId') accountId: string,
     @Body() addBalanceDto: AddBalanceDto,
   ) {
+    if (isNaN(+accountId)) {
+      throw new BadRequestException('Invalid AccountId');
+    }
+
     return this.accountService.addAccountBalance(+accountId, addBalanceDto);
   }
 }
