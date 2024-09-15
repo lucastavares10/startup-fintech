@@ -171,6 +171,8 @@ npm run test:cov
 
 A documentação da API está disponível em [Swagger](http://localhost:3000/docs/) após iniciar a aplicação.
 
+Na pasta **docs** do projeto existe uma collection para importação no Postman, com exemplo de todas as chamas da API.
+
 ## 9. Contribuidores
 
 [Lucas Tavares](https://www.linkedin.com/in/lucas-tavares-a25323116/)
