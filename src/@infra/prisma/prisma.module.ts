@@ -45,6 +45,10 @@ import { TransactionRepository } from './repositories/transactions.repository';
       useClass: AccountRepository,
     },
     {
+      provide: 'IGetBalanceRepository',
+      useClass: AccountRepository,
+    },
+    {
       provide: 'ICreateTransactionRepository',
       useClass: TransactionRepository,
     },
@@ -61,6 +65,7 @@ import { TransactionRepository } from './repositories/transactions.repository';
     'IDeleteUserRepository',
     'IDecreaseBalanceRepository',
     'IIncreaseBalanceRepository',
+    'IGetBalanceRepository',
     'ICreateTransactionRepository',
   ],
 })

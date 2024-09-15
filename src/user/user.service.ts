@@ -1,9 +1,11 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   ConflictException,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { HashingService } from 'src/@common/hashing/hashing.service';
 import { LoggingService } from 'src/@common/logger/logger.service';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
@@ -30,6 +32,7 @@ export class UserService {
     @Inject('IDeleteUserRepository')
     private readonly deleteUserRepository: IDeleteUserRepository,
     private readonly hashingService: HashingService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async create(createUserDto: CreateUserDto, correlationId: string) {
@@ -42,6 +45,8 @@ export class UserService {
         ...createUserDto,
         password: passwordHash,
       });
+
+      await this.cacheManager.set(`user_${newUser.id}`, newUser);
 
       this.loggingService.log(
         REGISTRY_TYPE.CREATE_USER,
@@ -72,7 +77,13 @@ export class UserService {
   }
 
   async findOne(userId: number) {
+    const cachedUser = await this.cacheManager.get(`user_${userId}`);
+
+    if (cachedUser) return cachedUser;
+
     const user = await this.findUserByIdRepository.findOne(userId);
+
+    await this.cacheManager.set(`user_${user.id}`, user);
 
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
@@ -96,6 +107,8 @@ export class UserService {
         type,
         password,
       });
+
+      await this.cacheManager.set(`user_${updatedUser.id}`, updatedUser);
 
       this.loggingService.log(
         REGISTRY_TYPE.UPDATE_USER,
@@ -121,6 +134,8 @@ export class UserService {
   async remove(userId: number, correlationId: string) {
     try {
       await this.deleteUserRepository.delete(userId);
+
+      await this.cacheManager.del(`user_${userId}`);
 
       this.loggingService.log(
         REGISTRY_TYPE.DELETE_USER,

@@ -13,12 +13,32 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
 import { UpdateUserDto } from 'src/@domain/dtos/user/update-user.dto';
+import {
+  ApiHeaders,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiResponse({ status: 201, description: 'User successfully created.' })
+  @ApiResponse({ status: 400, description: 'Invalid user data.' })
+  @ApiResponse({ status: 409, description: 'Email or CpfCnpj already exists.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiHeaders([
+    {
+      name: 'x-correlation-id',
+      description: 'Correlation ID for request tracing',
+      required: false,
+    },
+  ])
   create(
     @Body() createUserDto: CreateUserDto,
     @Headers('x-correlation-id') correlationId: string,
@@ -27,11 +47,27 @@ export class UserController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users',
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':userId')
+  @ApiOperation({ summary: 'Get user by ID' })
+  @ApiParam({
+    name: 'userId',
+    type: 'string',
+    description: 'ID of the user',
+  })
+  @ApiResponse({ status: 200, description: 'User retrieved successfully.' })
+  @ApiResponse({ status: 400, description: 'Invalid user ID.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   findOne(@Param('userId') userId: string) {
     if (isNaN(+userId)) {
       throw new BadRequestException('Invalid UserID');
@@ -41,6 +77,23 @@ export class UserController {
   }
 
   @Patch(':userId')
+  @ApiOperation({ summary: 'Update a user by ID' })
+  @ApiParam({
+    name: 'userId',
+    type: 'string',
+    description: 'ID of the user to update',
+  })
+  @ApiResponse({ status: 200, description: 'User updated successfully.' })
+  @ApiResponse({ status: 400, description: 'Invalid user ID or data.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiHeaders([
+    {
+      name: 'x-correlation-id',
+      description: 'Correlation ID for request tracing',
+      required: false,
+    },
+  ])
   update(
     @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -55,6 +108,23 @@ export class UserController {
 
   @HttpCode(204)
   @Delete(':userId')
+  @ApiOperation({ summary: 'Delete a user by ID' })
+  @ApiParam({
+    name: 'userId',
+    type: 'string',
+    description: 'ID of the user to delete',
+  })
+  @ApiResponse({ status: 204, description: 'User deleted successfully.' })
+  @ApiResponse({ status: 400, description: 'Invalid user ID.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiHeaders([
+    {
+      name: 'x-correlation-id',
+      description: 'Correlation ID for request tracing',
+      required: false,
+    },
+  ])
   remove(
     @Param('userId') userId: string,
     @Headers('x-correlation-id') correlationId: string,

@@ -1,9 +1,11 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   Injectable,
   BadRequestException,
   Inject,
   NotFoundException,
 } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { LoggingService } from 'src/@common/logger/logger.service';
 import { Transaction } from 'src/@domain/entities/transaction.entity';
 import { User } from 'src/@domain/entities/user.entity';
@@ -20,6 +22,7 @@ export class CommonTransfer implements ITransfer {
     private readonly findUserByAccountIdRepository: IFindUserByAccountIdRepository,
     @Inject('ICreateTransactionRepository')
     private readonly createTransactionRepository: ICreateTransactionRepository,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async handle(
@@ -62,6 +65,23 @@ export class CommonTransfer implements ITransfer {
       payee,
       value,
     );
+
+    payer.account.balance -= value;
+    payee.account.balance += value;
+
+    await this.cacheManager.set(`user_${payer.id}`, payer);
+
+    await this.cacheManager.set(`user_${payee.id}`, payee);
+
+    await this.cacheManager.set(`balance_${payer.account.id}`, {
+      accountId: payer.account.id,
+      balance: payer.account.balance,
+    });
+
+    await this.cacheManager.set(`balance_${payee.account.id}`, {
+      accountId: payee.account.id,
+      balance: payee.account.balance,
+    });
 
     this.loggingService.log(
       REGISTRY_TYPE.ENDING_TRANSACTION,
