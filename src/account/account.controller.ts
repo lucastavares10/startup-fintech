@@ -43,7 +43,7 @@ export class AccountController {
     },
   ])
   @Patch('/add-balance/:accountId')
-  addBalance(
+  async addBalance(
     @Param('accountId') accountId: string,
     @Body() addBalanceDto: AddBalanceDto,
     @Headers('x-correlation-id') correlationId: string,
@@ -80,7 +80,7 @@ export class AccountController {
     },
   ])
   @Get('/get-balance/:accountId')
-  getBalance(
+  async getBalance(
     @Param('accountId') accountId: string,
     @Headers('x-correlation-id') correlationId: string,
   ) {
