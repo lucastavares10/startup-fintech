@@ -67,11 +67,11 @@ Além disso, a aplicação implementa um sistema de armazenamento baseado em arq
 
 ## 6. Funcionalidades do Sistema
 
-A plataforma de pagamentos permite aos usuários comuns e lojistas realizar transações financeiras de forma eficiente. A seguir, estão detalhadas as principais funcionalidades da API, seus respectivos endpoints, os parâmetros esperados, payloads de requisição e as regras de negócio.
+A plataforma de pagamentos permite aos usuários comuns e lojistas realizar transações financeiras de forma eficiente. A seguir, estão detalhadas as principais funcionalidades da API, seus principais endpoints e regras de negócio.
+
+Demais funcionalidades estão documentadas no [Swagger](http://localhost:3000/docs/)
 
 ### 6.1 Cadastro de Usuários
-
-Este conjunto de endpoints permite criar, listar, buscar, atualizar e remover usuários da plataforma.
 
 ### Regras de negócio:
 
@@ -98,7 +98,7 @@ Este conjunto de endpoints permite criar, listar, buscar, atualizar e remover us
 
 ### 6.2 Gerenciamento de Conta
 
-A API permite consultar e adicionar saldo nas contas dos usuários. Toda conta é criada automaticamente ao cadastrar um novo usuário e seu id é retornado na criação o busca dos usuários.
+A API permite consultar e adicionar saldo nas contas dos usuários. Toda conta é criada automaticamente ao cadastrar um novo usuário e seu id é retornado na criação ou busca dos usuários.
 
 ### Principais Endpoints e Payloads
 
