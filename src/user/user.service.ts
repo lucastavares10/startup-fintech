@@ -90,11 +90,11 @@ export class UserService {
 
     const user = await this.findUserByIdRepository.findOne(userId);
 
-    await this.cacheManager.set(`user_${user.id}`, user);
-
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
+
+    await this.cacheManager.set(`user_${user.id}`, user);
 
     return user;
   }
