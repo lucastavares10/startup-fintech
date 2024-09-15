@@ -7,6 +7,7 @@ import { USER_TYPE } from 'src/@domain/enum/USER_TYPE';
 import { LoggingService } from 'src/@common/logger/logger.service';
 import { IFindUserByAccountIdRepository } from 'src/@domain/interfaces/repositories/user/IFindUserByAccountIdRepository';
 import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
+import { FIND_USER_BY_ACCOUNT_ID_REPOSITORY } from 'src/@domain/interfaces/repositories/constants';
 
 @Injectable()
 export class TransactionService {
@@ -14,7 +15,7 @@ export class TransactionService {
 
   constructor(
     private readonly loggingService: LoggingService,
-    @Inject('IFindUserByAccountIdRepository')
+    @Inject(FIND_USER_BY_ACCOUNT_ID_REPOSITORY)
     private readonly findUserByAccountIdRepository: IFindUserByAccountIdRepository,
     private readonly commonTransfer: CommonTransfer,
     private readonly merchantTransfer: MerchantTransfer,

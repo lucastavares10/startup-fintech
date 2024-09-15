@@ -6,14 +6,18 @@ import { AddBalanceDto } from 'src/@domain/dtos/account/add-balance.dto';
 import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
 import { IGetBalanceRepository } from 'src/@domain/interfaces/repositories/account/IGetBalanceRepository';
 import { IIncreaseBalanceRepository } from 'src/@domain/interfaces/repositories/account/IIncreaseBalanceRepository';
+import {
+  GET_BALANCE_ACCOUNT_REPOSITORY,
+  INCREASE_BALANCE_ACCOUNT_REPOSITORY,
+} from 'src/@domain/interfaces/repositories/constants';
 
 @Injectable()
 export class AccountService {
   constructor(
     private readonly loggingService: LoggingService,
-    @Inject('IIncreaseBalanceRepository')
+    @Inject(INCREASE_BALANCE_ACCOUNT_REPOSITORY)
     private readonly increaseBalanceRepository: IIncreaseBalanceRepository,
-    @Inject('IGetBalanceRepository')
+    @Inject(GET_BALANCE_ACCOUNT_REPOSITORY)
     private readonly getBalanceRepository: IGetBalanceRepository,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}

@@ -3,6 +3,18 @@ import { PrismaService } from './prisma.service';
 import { UserRepository } from './repositories/user.repository';
 import { AccountRepository } from './repositories/account.repository';
 import { TransactionRepository } from './repositories/transactions.repository';
+import {
+  CREATE_TRANSACTION_REPOSITORY,
+  CREATE_USER_REPOSITORY,
+  DECREASE_BALANCE_ACCOUNT_REPOSITORY,
+  DELETE_USER_REPOSITORY,
+  FIND_ALL_USER_REPOSITORY,
+  FIND_USER_BY_ACCOUNT_ID_REPOSITORY,
+  FIND_USER_BY_ID_REPOSITORY,
+  GET_BALANCE_ACCOUNT_REPOSITORY,
+  INCREASE_BALANCE_ACCOUNT_REPOSITORY,
+  UPDATE_USER_REPOSITORY,
+} from 'src/@domain/interfaces/repositories/constants';
 
 @Global()
 @Module({
@@ -13,43 +25,43 @@ import { TransactionRepository } from './repositories/transactions.repository';
     AccountRepository,
     TransactionRepository,
     {
-      provide: 'ICreateUserRepository',
+      provide: CREATE_USER_REPOSITORY,
       useClass: UserRepository,
     },
     {
-      provide: 'IFindAllUsersRepository',
+      provide: FIND_ALL_USER_REPOSITORY,
       useClass: UserRepository,
     },
     {
-      provide: 'IFindUserByIdRepository',
+      provide: FIND_USER_BY_ID_REPOSITORY,
       useClass: UserRepository,
     },
     {
-      provide: 'IFindUserByAccountIdRepository',
+      provide: FIND_USER_BY_ACCOUNT_ID_REPOSITORY,
       useClass: UserRepository,
     },
     {
-      provide: 'IUpdateUserRepository',
+      provide: UPDATE_USER_REPOSITORY,
       useClass: UserRepository,
     },
     {
-      provide: 'IDeleteUserRepository',
+      provide: DELETE_USER_REPOSITORY,
       useClass: UserRepository,
     },
     {
-      provide: 'IDecreaseBalanceRepository',
+      provide: DECREASE_BALANCE_ACCOUNT_REPOSITORY,
       useClass: AccountRepository,
     },
     {
-      provide: 'IIncreaseBalanceRepository',
+      provide: INCREASE_BALANCE_ACCOUNT_REPOSITORY,
       useClass: AccountRepository,
     },
     {
-      provide: 'IGetBalanceRepository',
+      provide: GET_BALANCE_ACCOUNT_REPOSITORY,
       useClass: AccountRepository,
     },
     {
-      provide: 'ICreateTransactionRepository',
+      provide: CREATE_TRANSACTION_REPOSITORY,
       useClass: TransactionRepository,
     },
   ],
@@ -57,16 +69,16 @@ import { TransactionRepository } from './repositories/transactions.repository';
     UserRepository,
     AccountRepository,
     TransactionRepository,
-    'ICreateUserRepository',
-    'IFindAllUsersRepository',
-    'IFindUserByIdRepository',
-    'IFindUserByAccountIdRepository',
-    'IUpdateUserRepository',
-    'IDeleteUserRepository',
-    'IDecreaseBalanceRepository',
-    'IIncreaseBalanceRepository',
-    'IGetBalanceRepository',
-    'ICreateTransactionRepository',
+    CREATE_USER_REPOSITORY,
+    FIND_ALL_USER_REPOSITORY,
+    FIND_USER_BY_ID_REPOSITORY,
+    FIND_USER_BY_ACCOUNT_ID_REPOSITORY,
+    UPDATE_USER_REPOSITORY,
+    DELETE_USER_REPOSITORY,
+    DECREASE_BALANCE_ACCOUNT_REPOSITORY,
+    INCREASE_BALANCE_ACCOUNT_REPOSITORY,
+    GET_BALANCE_ACCOUNT_REPOSITORY,
+    CREATE_TRANSACTION_REPOSITORY,
   ],
 })
 export class PrismaModule {}

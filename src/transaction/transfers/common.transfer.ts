@@ -11,6 +11,10 @@ import { Transaction } from 'src/@domain/entities/transaction.entity';
 import { User } from 'src/@domain/entities/user.entity';
 import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
 import { ITransfer } from 'src/@domain/interfaces/ITransfer';
+import {
+  CREATE_TRANSACTION_REPOSITORY,
+  FIND_USER_BY_ACCOUNT_ID_REPOSITORY,
+} from 'src/@domain/interfaces/repositories/constants';
 import { ICreateTransactionRepository } from 'src/@domain/interfaces/repositories/transaction/ICreateTransactionRepository';
 import { IFindUserByAccountIdRepository } from 'src/@domain/interfaces/repositories/user/IFindUserByAccountIdRepository';
 
@@ -18,9 +22,9 @@ import { IFindUserByAccountIdRepository } from 'src/@domain/interfaces/repositor
 export class CommonTransfer implements ITransfer {
   constructor(
     private readonly loggingService: LoggingService,
-    @Inject('IFindUserByAccountIdRepository')
+    @Inject(FIND_USER_BY_ACCOUNT_ID_REPOSITORY)
     private readonly findUserByAccountIdRepository: IFindUserByAccountIdRepository,
-    @Inject('ICreateTransactionRepository')
+    @Inject(CREATE_TRANSACTION_REPOSITORY)
     private readonly createTransactionRepository: ICreateTransactionRepository,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}

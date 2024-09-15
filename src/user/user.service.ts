@@ -11,6 +11,13 @@ import { LoggingService } from 'src/@common/logger/logger.service';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
 import { UpdateUserDto } from 'src/@domain/dtos/user/update-user.dto';
 import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
+import {
+  CREATE_USER_REPOSITORY,
+  DELETE_USER_REPOSITORY,
+  FIND_ALL_USER_REPOSITORY,
+  FIND_USER_BY_ID_REPOSITORY,
+  UPDATE_USER_REPOSITORY,
+} from 'src/@domain/interfaces/repositories/constants';
 import { ICreateUserRepository } from 'src/@domain/interfaces/repositories/user/ICreateUserRepository';
 import { IDeleteUserRepository } from 'src/@domain/interfaces/repositories/user/IDeleteUserRepository';
 import { IFindAllUsersRepository } from 'src/@domain/interfaces/repositories/user/IFindAllUsersRepository';
@@ -21,15 +28,15 @@ import { IUpdateUserRepository } from 'src/@domain/interfaces/repositories/user/
 export class UserService {
   constructor(
     private readonly loggingService: LoggingService,
-    @Inject('ICreateUserRepository')
+    @Inject(CREATE_USER_REPOSITORY)
     private readonly createUserRepository: ICreateUserRepository,
-    @Inject('IFindAllUsersRepository')
+    @Inject(FIND_ALL_USER_REPOSITORY)
     private readonly findAllUsersRepository: IFindAllUsersRepository,
-    @Inject('IFindUserByIdRepository')
+    @Inject(FIND_USER_BY_ID_REPOSITORY)
     private readonly findUserByIdRepository: IFindUserByIdRepository,
-    @Inject('IUpdateUserRepository')
+    @Inject(UPDATE_USER_REPOSITORY)
     private readonly updateUserRepository: IUpdateUserRepository,
-    @Inject('IDeleteUserRepository')
+    @Inject(DELETE_USER_REPOSITORY)
     private readonly deleteUserRepository: IDeleteUserRepository,
     private readonly hashingService: HashingService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
