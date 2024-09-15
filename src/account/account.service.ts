@@ -12,7 +12,11 @@ export class AccountService {
     private readonly increaseBalanceRepository: IIncreaseBalanceRepository,
   ) {}
 
-  async addAccountBalance(accountId: number, addBalanceDto: AddBalanceDto) {
+  async addAccountBalance(
+    accountId: number,
+    addBalanceDto: AddBalanceDto,
+    correlationId: string,
+  ) {
     try {
       const balanceDto = await this.increaseBalanceRepository.increaseBalance(
         accountId,
@@ -22,6 +26,7 @@ export class AccountService {
       this.loggingService.log(
         REGISTRY_TYPE.ADD_BALANCE,
         `amount value ${addBalanceDto.value} added to account ${accountId}`,
+        correlationId,
       );
 
       return balanceDto;
@@ -29,7 +34,7 @@ export class AccountService {
       this.loggingService.error(
         REGISTRY_TYPE.ERROR,
         `failed to add amount value to account ${accountId}: ${error.message}`,
-        null,
+        correlationId,
       );
 
       if (error.message === 'Account not found') {

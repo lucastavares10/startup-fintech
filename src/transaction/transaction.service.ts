@@ -20,11 +20,11 @@ export class TransactionService {
     private readonly merchantTransfer: MerchantTransfer,
   ) {}
 
-  async handle(transferDto: TransferDto) {
+  async handle(transferDto: TransferDto, correlationId: string) {
     this.loggingService.log(
       REGISTRY_TYPE.BEGIN_TRANSACTION,
       `Payer with account ${transferDto.payer} initiate transfer to payee with account ${transferDto.payee}`,
-      String(transferDto.payer),
+      correlationId,
     );
 
     const payer = await this.findUserByAccountIdRepository.findByAccountId(
@@ -35,7 +35,7 @@ export class TransactionService {
       this.loggingService.log(
         REGISTRY_TYPE.ENDING_TRANSACTION,
         `Payer with account ${transferDto.payer} not found`,
-        String(transferDto.payer),
+        correlationId,
       );
 
       throw new BadRequestException('Payer not found');
@@ -47,6 +47,7 @@ export class TransactionService {
       payer,
       transferDto.payee,
       transferDto.value,
+      correlationId,
     );
 
     return { message: `Transfer completed successfully.`, data: transaction };

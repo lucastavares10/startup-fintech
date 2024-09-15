@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, Headers } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { TransferDto } from 'src/@domain/dtos/transaction/transfer.dto';
 
@@ -8,7 +8,10 @@ export class TransactionController {
 
   @Post()
   @HttpCode(200)
-  async transfer(@Body() transferDto: TransferDto) {
-    return await this.transactionService.handle(transferDto);
+  async transfer(
+    @Body() transferDto: TransferDto,
+    @Headers('x-correlation-id') correlationId: string,
+  ) {
+    return await this.transactionService.handle(transferDto, correlationId);
   }
 }

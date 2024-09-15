@@ -13,21 +13,21 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  fintech_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - ./log:/var/log
-    env_file:
-      - .env.local
-    depends_on:
-      - postgres
-    restart: always
+  # fintech_app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '3000:3000'
+  #   environment:
+  #     - NODE_ENV=development
+  #   volumes:
+  #     - ./log:/var/log
+  #   env_file:
+  #     - .env.local
+  #   depends_on:
+  #     - postgres
+  #   restart: always
 
 volumes:
   pgdata:

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { EnvironmentModule } from './@common/environment/environment.module';
 import { UserModule } from './user/user.module';
@@ -13,6 +14,7 @@ import { TransactionModule } from './transaction/transaction.module';
     PrismaModule,
     AccountModule,
     TransactionModule,
+    CacheModule.register({ isGlobal: true }),
   ],
   controllers: [AppController],
   providers: [],

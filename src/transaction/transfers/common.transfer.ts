@@ -26,18 +26,19 @@ export class CommonTransfer implements ITransfer {
     payer: User,
     payeeId: number,
     value: number,
+    correlationId: string,
   ): Promise<Transaction> {
     this.loggingService.log(
       REGISTRY_TYPE.PROCESSING_COMMON_TRANSFER,
       `Entering common transfer process`,
-      String(payer.account.id),
+      correlationId,
     );
 
     if (!payer.hasBalance(value)) {
       this.loggingService.log(
         REGISTRY_TYPE.ENDING_TRANSACTION,
         `Payer with account ${payer.account.id} has insuficient funds in account`,
-        String(payer.id),
+        correlationId,
       );
 
       throw new BadRequestException('Insufficient funds');
@@ -50,7 +51,7 @@ export class CommonTransfer implements ITransfer {
       this.loggingService.log(
         REGISTRY_TYPE.ENDING_TRANSACTION,
         `Payee with account ${payeeId} to transfer the amount not found`,
-        String(payer.account.id),
+        correlationId,
       );
 
       throw new NotFoundException('Payee account not found');
@@ -65,7 +66,7 @@ export class CommonTransfer implements ITransfer {
     this.loggingService.log(
       REGISTRY_TYPE.ENDING_TRANSACTION,
       `Payer with account ${payer.account.id} successfully transfer amount to account ${payee.account.id} in transaction ${result.id}`,
-      String(payer.account.id),
+      correlationId,
     );
 
     return result;

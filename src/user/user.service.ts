@@ -32,7 +32,7 @@ export class UserService {
     private readonly hashingService: HashingService,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto, correlationId: string) {
     try {
       const passwordHash = await this.hashingService.hash(
         createUserDto.password,
@@ -46,7 +46,7 @@ export class UserService {
       this.loggingService.log(
         REGISTRY_TYPE.CREATE_USER,
         'User Created',
-        String(newUser.account.id),
+        correlationId,
       );
 
       return newUser;
@@ -54,7 +54,7 @@ export class UserService {
       this.loggingService.error(
         REGISTRY_TYPE.ERROR,
         `Error in Create user: ${error.message}`,
-        null,
+        correlationId,
       );
 
       if (error.message === 'Email already exists')
@@ -81,7 +81,11 @@ export class UserService {
     return user;
   }
 
-  async update(userId: number, updateUserDto: UpdateUserDto) {
+  async update(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+    correlationId: string,
+  ) {
     const { fullname, email, password, cpfCnpj, type } = updateUserDto;
 
     try {
@@ -96,7 +100,7 @@ export class UserService {
       this.loggingService.log(
         REGISTRY_TYPE.UPDATE_USER,
         'User updated',
-        String(updatedUser.account.id),
+        correlationId,
       );
 
       return updatedUser;
@@ -104,7 +108,7 @@ export class UserService {
       this.loggingService.error(
         REGISTRY_TYPE.ERROR,
         `Error in update user: ${error.message}`,
-        String(userId),
+        correlationId,
       );
 
       if (error.message === 'User not found') {
@@ -114,18 +118,20 @@ export class UserService {
     }
   }
 
-  async remove(userId: number) {
+  async remove(userId: number, correlationId: string) {
     try {
       await this.deleteUserRepository.delete(userId);
 
       this.loggingService.log(
         REGISTRY_TYPE.DELETE_USER,
         `User deleted: ID ${userId}`,
+        correlationId,
       );
     } catch (error) {
       this.loggingService.error(
         REGISTRY_TYPE.ERROR,
         `Error in delete user with ID ${userId}: ${error.message}`,
+        correlationId,
       );
 
       if (error.message === 'User not found') {

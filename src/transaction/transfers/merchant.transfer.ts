@@ -13,18 +13,19 @@ export class MerchantTransfer implements ITransfer {
     payer: User,
     payeeId: number,
     value: number,
+    correlationId: string,
   ): Promise<Transaction> {
     this.loggingService.log(
       REGISTRY_TYPE.PROCESSING_MERCHANT_TRANSFER,
       `Entering merchant transfer process`,
-      String(payer.account.id),
+      correlationId,
     );
 
     if (payer.isMerchant()) {
       this.loggingService.log(
         REGISTRY_TYPE.ENDING_TRANSACTION,
         `Payer with account ${payer.account.id} is a merchant and cannot proccess transfers`,
-        String(payer.account.id),
+        correlationId,
       );
 
       throw new BadRequestException(
