@@ -151,7 +151,7 @@ docker-compose up -d
 ```
 
 - Serão criados os containers fintech_app, postgres e redis
-- A aplicação estará disponível em [localhost:3000](http://localhost:3000/)
+- A aplicação estará disponível em [localhost:3000/health](http://localhost:3000/health)
 
 ### Testes com Jest
 

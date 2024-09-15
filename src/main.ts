@@ -33,7 +33,6 @@ async function bootstrap() {
     .setTitle('Fintech Startup')
     .setDescription('The Fintech Startup API description')
     .setVersion('1.0')
-    .addTag('Usuários')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
