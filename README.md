@@ -18,15 +18,15 @@
 
 ## Índice
 
-1. [Descrição do projeto](#Descrição-projeto)
-2. [Tecnologias](#Tecnologias)
-3. [Design Patterns e Metodologias](#Design-patterns)
-4. [Arquitetura e Armazenamento](#Arquitetura-e-Armazenamento)
-5. [Diagrama de entidade e relacionamento](#Diagrama-ERD)
-6. [Funcionalidades do Sistema](#Funcionalidades-do-Sistema)
-7. [Instruções de uso](#Instruções-de-uso)
-8. [Documentação da API](#Documentação-da-API)
-9. [Contribuidores](#Contribuidores)
+1. [Descrição do projeto](#descrição-do-projeto)
+2. [Tecnologias](#tecnologias)
+3. [Design Patterns e Metodologias](#design-patterns-e-Metodologias)
+4. [Arquitetura e Armazenamento](#arquitetura-e-armazenamento)
+5. [Diagrama de entidade e relacionamento](#diagrama-de-entidade-e-relacionamento)
+6. [Funcionalidades do Sistema](#funcionalidades-do-sistema)
+7. [Instruções de uso](#instruções-de-uso)
+8. [Documentação da API](#documentação-da-api)
+9. [Contribuidores](#contribuidores)
 
 ## 1. Descrição do projeto
 
