@@ -23,13 +23,14 @@
 3. [Design Patterns e Metodologias](#Design-patterns)
 4. [Arquitetura e Armazenamento](#Arquitetura-e-Armazenamento)
 5. [Diagrama de entidade e relacionamento](#Diagrama-ERD)
-6. [Instruções de uso](#Instruções-de-uso)
-7. [Documentação da API](#Documentação-da-API)
-8. [Contribuidores](#Contribuidores)
+6. [Funcionalidades do Sistema](#Funcionalidades-do-Sistema)
+7. [Instruções de uso](#Instruções-de-uso)
+8. [Documentação da API](#Documentação-da-API)
+9. [Contribuidores](#Contribuidores)
 
 ## 1. Descrição do projeto
 
-Este projeto foi desenvolvido como parte de um desafio para uma Fintech Startup. O objetivo é fornecer uma API RESTful construída com NestJS, seguindo boas práticas de desenvolvimento e design, para uma plataforma de pagamentos que permite transferências entre usuários e lojistas.
+Este projeto foi desenvolvido como parte de um desafio para uma Fintech Startup. O objetivo é fornecer uma API RESTful construída com NestJS, seguindo boas práticas de desenvolvimento e design.
 
 ## 2. Tecnologias
 
@@ -64,7 +65,82 @@ Além disso, a aplicação implementa um sistema de armazenamento baseado em arq
 
 <img src="./.github/images/diagram.png" alt="Diagram" />
 
-## 6. Instruções de uso
+## 6. Funcionalidades do Sistema
+
+A plataforma de pagamentos permite aos usuários comuns e lojistas realizar transações financeiras de forma eficiente. A seguir, estão detalhadas as principais funcionalidades da API, seus respectivos endpoints, os parâmetros esperados, payloads de requisição e as regras de negócio.
+
+### 6.1 Cadastro de Usuários
+
+Este conjunto de endpoints permite criar, listar, buscar, atualizar e remover usuários da plataforma.
+
+### Regras de negócio:
+
+- O cadastro exige os campos: **Nome Completo**, **CPF**, **e-mail**, **Senha** e **Tipo de usuário**.
+- Os Tipos de usuário são **COMMON** ou **MERCHANT**.
+- CPF e e-mail são **únicos**, garantindo que nenhum usuário tenha dados duplicados no sistema.
+- Ao cadastrar um novo usuário, uma conta bancária é automaticamente criada e associada a ele e retornada no payload.
+
+### Principais Endpoints e Payloads
+
+1. Criar um novo usuário
+
+   > **POST /user**
+
+   ```
+     {
+        "fullname": "Lucas Tavares",
+        "email": "freirelts@gmail.com",
+        "password": "123456",
+        "cpfCnpj": "05423658751",
+        "type": "COMMON"
+     }
+   ```
+
+### 6.2 Gerenciamento de Conta
+
+A API permite consultar e adicionar saldo nas contas dos usuários. Toda conta é criada automaticamente ao cadastrar um novo usuário e seu id é retornado na criação o busca dos usuários.
+
+### Principais Endpoints e Payloads
+
+1. Consultar saldo da conta
+
+   > **GET /get-balance/:accountId**
+
+2. Adicionar saldo na conta
+
+   > **PATCH /add-balance/:accountId**
+
+   ```
+     {
+       "value": 200.22
+     }
+   ```
+
+### 6.3 Transferências entre Contas
+
+A API permite realizar transferências entre contas de usuários, seguindo regras específicas de validação.
+
+### Regras de negócio:
+
+- Usuários podem transferir dinheiro para outros usuários e lojistas.
+- Lojistas não podem enviar dinheiro, apenas receber.
+- Antes de realizar uma transferência, o sistema verifica se o usuário remetente (payer) possui saldo suficiente.
+
+### Principais Endpoints e Payloads
+
+1. Realizar transferência
+
+   > **POST /transfer**
+
+   ```
+     {
+        "value": 100.00, // Valor da transferência.
+        "payer": 101, // ID da conta do usuário que está enviando o dinheiro.
+        "payee": 202 // ID da conta de quem está recebendo o dinheiro.
+      }
+   ```
+
+## 7. Instruções de uso
 
 ### Build e start usando docker
 
@@ -85,10 +161,16 @@ Para rodar os testes, use o comando:
 npm run test
 ```
 
-## 7. Documentação da API
+Para cobertura de testes:
+
+```bash
+npm run test:cov
+```
+
+## 8. Documentação da API
 
 A documentação da API está disponível em [Swagger](http://localhost:3000/docs/) após iniciar a aplicação.
 
-## 8. Contribuidores
+## 9. Contribuidores
 
 [Lucas Tavares](https://www.linkedin.com/in/lucas-tavares-a25323116/)

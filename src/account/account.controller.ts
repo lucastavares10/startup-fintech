@@ -22,7 +22,6 @@ import {
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Patch('/add-balance/:accountId')
   @ApiOperation({ summary: 'Add balance to an account' })
   @ApiParam({
     name: 'accountId',
@@ -43,6 +42,7 @@ export class AccountController {
       required: false,
     },
   ])
+  @Patch('/add-balance/:accountId')
   addBalance(
     @Param('accountId') accountId: string,
     @Body() addBalanceDto: AddBalanceDto,
@@ -59,7 +59,6 @@ export class AccountController {
     );
   }
 
-  @Get('/get-balance/:accountId')
   @ApiOperation({ summary: 'Get the balance of an account' })
   @ApiParam({
     name: 'accountId',
@@ -80,6 +79,7 @@ export class AccountController {
       required: false,
     },
   ])
+  @Get('/get-balance/:accountId')
   getBalance(
     @Param('accountId') accountId: string,
     @Headers('x-correlation-id') correlationId: string,

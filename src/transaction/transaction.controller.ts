@@ -14,7 +14,6 @@ import {
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
-  @Post()
   @HttpCode(200)
   @ApiOperation({ summary: 'Execute a transfer between users' })
   @ApiResponse({ status: 200, description: 'Transfer successful.' })
@@ -38,6 +37,7 @@ export class TransactionController {
     `,
     type: TransferDto,
   })
+  @Post()
   async transfer(
     @Body() transferDto: TransferDto,
     @Headers('x-correlation-id') correlationId: string,

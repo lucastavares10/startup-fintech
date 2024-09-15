@@ -26,7 +26,6 @@ import {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User successfully created.' })
   @ApiResponse({ status: 400, description: 'Invalid user data.' })
@@ -39,6 +38,7 @@ export class UserController {
       required: false,
     },
   ])
+  @Post()
   create(
     @Body() createUserDto: CreateUserDto,
     @Headers('x-correlation-id') correlationId: string,
@@ -46,18 +46,17 @@ export class UserController {
     return this.userService.create(createUserDto, correlationId);
   }
 
-  @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({
     status: 200,
     description: 'List of users',
   })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @Get()
   findAll() {
     return this.userService.findAll();
   }
 
-  @Get(':userId')
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiParam({
     name: 'userId',
@@ -68,6 +67,7 @@ export class UserController {
   @ApiResponse({ status: 400, description: 'Invalid user ID.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @Get(':userId')
   findOne(@Param('userId') userId: string) {
     if (isNaN(+userId)) {
       throw new BadRequestException('Invalid UserID');
@@ -76,7 +76,6 @@ export class UserController {
     return this.userService.findOne(+userId);
   }
 
-  @Patch(':userId')
   @ApiOperation({ summary: 'Update a user by ID' })
   @ApiParam({
     name: 'userId',
@@ -94,6 +93,7 @@ export class UserController {
       required: false,
     },
   ])
+  @Patch(':userId')
   update(
     @Param('userId') userId: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -107,7 +107,6 @@ export class UserController {
   }
 
   @HttpCode(204)
-  @Delete(':userId')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({
     name: 'userId',
@@ -125,6 +124,7 @@ export class UserController {
       required: false,
     },
   ])
+  @Delete(':userId')
   remove(
     @Param('userId') userId: string,
     @Headers('x-correlation-id') correlationId: string,
