@@ -4,7 +4,17 @@
 </h1>
 
 <p align="center">
-<img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></p>
+
+  <img src="https://img.shields.io/badge/Nestjs-10.0-darkred" alt="NestJS Version" />
+  <img src="https://img.shields.io/badge/Typescript-5.1.3-darkblue" alt="TypeScript Version" />
+  <img src="https://img.shields.io/badge/PostgreSQL-13.4-blue" alt="PostgreSQL Version" />
+  <img src="https://img.shields.io/badge/Prisma-5.19.1-lightblue" alt="Prisma Version" />
+  <img src="https://img.shields.io/badge/Jest-29.5.0-brightgreen" alt="Jest Version" />
+  <img src="https://img.shields.io/badge/Docker-24.0.3-blue" alt="Docker Version" />
+  <img src="https://img.shields.io/badge/Swagger-7.4.0-green" alt="Swagger Version" />
+  <img src="https://img.shields.io/badge/bcrypt-5.1.1-orange" alt="bcrypt Version" />
+  <img src="https://img.shields.io/badge/redis-3.1.2-red" alt="redis Version" />
+</p>
 
 ## Índice
 
