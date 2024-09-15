@@ -9,54 +9,76 @@
 ## Índice
 
 1. [Descrição do projeto](#Descrição-projeto)
-2. [Diagrama de entidade e relacionamento](#Diagrama-ERD)
-3. [Tecnologias](#Tecnologias)
-4. [Design Patterns e Metodologias](#Design-patterns)
-5. [Instruções de uso](#Instruções-de-uso)
+2. [Tecnologias](#Tecnologias)
+3. [Design Patterns e Metodologias](#Design-patterns)
+4. [Arquitetura e Armazenamento](#Arquitetura-e-Armazenamento)
+5. [Diagrama de entidade e relacionamento](#Diagrama-ERD)
+6. [Instruções de uso](#Instruções-de-uso)
+7. [Documentação da API](#Documentação-da-API)
+8. [Contribuidores](#Contribuidores)
 
 ## 1. Descrição do projeto
 
-Este projeto foi desenvolvido como parte de um desafio para uma Fintech Startup. O objetivo é fornecer uma API RESTful construída com NestJS, utilizando boas práticas de desenvolvimento e design.
+Este projeto foi desenvolvido como parte de um desafio para uma Fintech Startup. O objetivo é fornecer uma API RESTful construída com NestJS, seguindo boas práticas de desenvolvimento e design, para uma plataforma de pagamentos que permite transferências entre usuários e lojistas.
 
-## 2. Diagrama de entidade e relacionamento
-
-<img src="./.github/images/diagram.png" alt="Diagram" />
-
-## 3. Tecnologias
+## 2. Tecnologias
 
 Principais ferramentas e tecnologias utilizadas no projeto:
 
+- **NestJS** - Framework progressivo para construir aplicações server-side eficientes, confiáveis e escaláveis com Node.js.
 - **npm** - Gerenciador de dependências
 - **TypeScript** - Linguagem de programação
-- **NestJS** - Framework progressivo para construir aplicações server-side eficientes, confiáveis e escaláveis com Node.js.
 - **PostgreSQL** - Banco de dados relacional.
 - **Prisma** - ORM para TypeScript que facilita o acesso ao banco de dados.
 - **Jest** - Framework de testes para JavaScript, utilizado para garantir a qualidade do código.
 - **Docker** - Plataforma de conteinerização que permite criar, testar e implantar aplicações em ambientes isolados.
-- **Zod** - Biblioteca TypeScript para validação e parsing de esquemas.
+- **Swagger** - Ferramenta para documentação da API
+- **bcrypt** - Biblioteca para hashing de senhas
+- **redis** - Sistema de cache para otimização de performance
 
-## 4. Design Patterns e Metodologias
+## 3. Design Patterns e Metodologias
 
-- **SOLID**
-- **Dependency Injection**
-- **Keep It Simple, Silly (KISS)**
+- **SOLID** - Princípios de design de software para promover a manutenção e escalabilidade
+- **Dependency Injection** - Técnica para desacoplar componentes e facilitar a manutenção
+- **Repository Pattern** - Desacoplamento da lógica de acesso a dados
+- **Strategy Pattern** - Permite a adição de novos tipos de transferência sem alterar o código existente
+- **Keep It Simple, Silly (KISS)** - Princípio para manter o código simples e fácil de entender
 
-## 5. Instruções de uso
+## 4. Arquitetura e Armazenamento
+
+A aplicação adota uma arquitetura organizada com um sistema de armazenamento logs. Utiliza o Redis para caching em diversas partes da aplicação, o que ajuda a otimizar o desempenho e reduzir o tempo de resposta das operações.
+
+Além disso, a aplicação implementa um sistema de armazenamento baseado em arquivos com identificadores de correlação. Isso garante que os dados e logs sejam armazenados de forma organizada e facilmente recuperável, facilitando a gestão e a análise dos dados através de outras ferramentas.
+
+## 5. Diagrama de entidade e relacionamento
+
+<img src="./.github/images/diagram.png" alt="Diagram" />
+
+## 6. Instruções de uso
 
 ### Build e start usando docker
+
+Para iniciar a aplicação e o banco de dados, use o comando:
 
 ```bash
 docker-compose up -d
 ```
 
-- Serão criados dois containers, fintech_app e fintech_db
+- Serão criados os containers fintech_app, postgres e redis
+- A aplicação estará disponível em [localhost](http://localhost:3000/)
 
 ### Testes com Jest
+
+Para rodar os testes, use o comando:
 
 ```bash
 npm run test
 ```
 
-## Contribuidores
+## 7. Documentação da API
+
+A documentação da API está disponível em [Swagger](http://localhost:3000/docs/) após iniciar a aplicação.
+
+## 8. Contribuidores
 
 [Lucas Tavares](https://www.linkedin.com/in/lucas-tavares-a25323116/)
