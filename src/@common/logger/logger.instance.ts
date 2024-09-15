@@ -25,7 +25,7 @@ export function addWinstonLoggerInstance(
   } else {
     winstonInstance.add(
       new transports.File({
-        filename: `log/${appName}.log`,
+        filename: `/var/log/${appName}.log`,
         maxsize: 40 * 1000000,
         maxFiles: 1,
         tailable: true,

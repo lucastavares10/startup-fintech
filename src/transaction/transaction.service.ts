@@ -1,25 +1,43 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { TransferDto } from 'src/@domain/dtos/transaction/transfer.dto';
 import { ITransfer } from 'src/@domain/interfaces/ITransfer';
-import { UserRepository } from 'src/@infra/prisma/repositories/user.repository';
 import { CommonTransfer } from './transfers/common.transfer';
 import { MerchantTransfer } from './transfers/merchant.transfer';
 import { USER_TYPE } from 'src/@domain/enum/USER_TYPE';
+import { LoggingService } from 'src/@common/logger/logger.service';
+import { IFindUserByAccountIdRepository } from 'src/@domain/interfaces/repositories/user/IFindUserByAccountIdRepository';
+import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
 
 @Injectable()
 export class TransactionService {
   private transfer: ITransfer;
 
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly loggingService: LoggingService,
+    @Inject('IFindUserByAccountIdRepository')
+    private readonly findUserByAccountIdRepository: IFindUserByAccountIdRepository,
     private readonly commonTransfer: CommonTransfer,
     private readonly merchantTransfer: MerchantTransfer,
   ) {}
 
   async handle(transferDto: TransferDto) {
-    const payer = await this.userRepository.findByAccountId(transferDto.payer);
+    this.loggingService.log(
+      REGISTRY_TYPE.BEGIN_TRANSACTION,
+      `Payer with account ${transferDto.payer} initiate transfer to payee with account ${transferDto.payee}`,
+      String(transferDto.payer),
+    );
+
+    const payer = await this.findUserByAccountIdRepository.findByAccountId(
+      transferDto.payer,
+    );
 
     if (!payer) {
+      this.loggingService.log(
+        REGISTRY_TYPE.ENDING_TRANSACTION,
+        `Payer with account ${transferDto.payer} not found`,
+        String(transferDto.payer),
+      );
+
       throw new BadRequestException('Payer not found');
     }
 

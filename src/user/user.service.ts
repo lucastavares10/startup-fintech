@@ -8,6 +8,7 @@ import { HashingService } from 'src/@common/hashing/hashing.service';
 import { LoggingService } from 'src/@common/logger/logger.service';
 import { CreateUserDto } from 'src/@domain/dtos/user/create-user.dto';
 import { UpdateUserDto } from 'src/@domain/dtos/user/update-user.dto';
+import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
 import { ICreateUserRepository } from 'src/@domain/interfaces/repositories/user/ICreateUserRepository';
 import { IDeleteUserRepository } from 'src/@domain/interfaces/repositories/user/IDeleteUserRepository';
 import { IFindAllUsersRepository } from 'src/@domain/interfaces/repositories/user/IFindAllUsersRepository';
@@ -42,8 +43,20 @@ export class UserService {
         password: passwordHash,
       });
 
+      this.loggingService.log(
+        REGISTRY_TYPE.CREATE_USER,
+        'User Created',
+        String(newUser.account.id),
+      );
+
       return newUser;
     } catch (error) {
+      this.loggingService.error(
+        REGISTRY_TYPE.ERROR,
+        `Error in Create user: ${error.message}`,
+        null,
+      );
+
       if (error.message === 'Email already exists')
         throw new ConflictException('Email already exists');
 
@@ -80,8 +93,20 @@ export class UserService {
         password,
       });
 
+      this.loggingService.log(
+        REGISTRY_TYPE.UPDATE_USER,
+        'User updated',
+        String(updatedUser.account.id),
+      );
+
       return updatedUser;
     } catch (error) {
+      this.loggingService.error(
+        REGISTRY_TYPE.ERROR,
+        `Error in update user: ${error.message}`,
+        String(userId),
+      );
+
       if (error.message === 'User not found') {
         throw new NotFoundException(`User with ID ${userId} not found`);
       }
@@ -92,7 +117,17 @@ export class UserService {
   async remove(userId: number) {
     try {
       await this.deleteUserRepository.delete(userId);
+
+      this.loggingService.log(
+        REGISTRY_TYPE.DELETE_USER,
+        `User deleted: ID ${userId}`,
+      );
     } catch (error) {
+      this.loggingService.error(
+        REGISTRY_TYPE.ERROR,
+        `Error in delete user with ID ${userId}: ${error.message}`,
+      );
+
       if (error.message === 'User not found') {
         throw new NotFoundException(`User with ID ${userId} not found`);
       }

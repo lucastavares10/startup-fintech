@@ -49,8 +49,12 @@ export class UserController {
   }
 
   @HttpCode(204)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete(':userId')
+  remove(@Param('userId') userId: string) {
+    if (isNaN(+userId)) {
+      throw new BadRequestException('Invalid UserID');
+    }
+
+    return this.userService.remove(+userId);
   }
 }

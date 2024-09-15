@@ -5,25 +5,19 @@ import { REGISTRY_TYPE } from 'src/@domain/enum/REGISTRY_TYPE';
 export class LoggingService {
   private readonly logger = new Logger(LoggingService.name);
 
-  log(type: REGISTRY_TYPE, message: string, userId: string): void {
+  log(type: REGISTRY_TYPE, message: string, accountId?: string): void {
     this.logger.log({
       type,
       message,
-      userId,
+      accountId,
     });
   }
 
-  error(
-    type: REGISTRY_TYPE,
-    message: string,
-    userId: string,
-    error?: any,
-  ): void {
+  error(type: REGISTRY_TYPE, message: string, accountId?: string): void {
     this.logger.error({
       type,
       message,
-      userId,
-      error,
+      accountId,
     });
   }
 }
